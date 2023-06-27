@@ -3,18 +3,19 @@
 <div class="container custom-login">
     <div class="row">
         <div class="col-sm-4 col-sm-offset-4">
-            <form>
+            <form action="login" method="POST">
             <div class="form-group">
+                    @csrf
                 <label for="exampleInputEmail1">Email</label>
-                <input type="email" class="form-control" placeholder="Email" id="exampleInputEmail1">
+                <input type="email" name="email" class="form-control" placeholder="Email" id="exampleInputEmail1">
             </div>
 
             <div class="form-group">
                 <label for="exampleInputpassword1">Password</label>
-                <input type="password" class="form-control" placeholder="Password" id="exampleInputpassword1">
+                <input type="password" name="password" class="form-control" placeholder="Password" id="exampleInputpassword1">
             </div>
             <button type="submit" class=btn btn-default>
-                Submit
+                Login
             </button>
             </form>
 
