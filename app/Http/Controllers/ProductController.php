@@ -10,4 +10,7 @@ class ProductController extends Controller
     function index(){
         return "WELCOME";
     }
+    function home(){
+        return "WELCOME not";
+    }
 }

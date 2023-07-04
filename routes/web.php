@@ -21,9 +21,14 @@ Route::get('/login', function () {
     return view('login');
 });
 
+
+Route::get('/home', function () {
+    return view('home');
+});
 // Route::post('/', [UserController::class, 'login']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/', [ProductController::class, 'index']);
+// Route::get('/home', [ProductController::class, 'home']);
 
 
 // Route::match(['GET', 'POST'], '/', [UserController::class, 'login']);
