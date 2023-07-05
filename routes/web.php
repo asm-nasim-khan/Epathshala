@@ -25,6 +25,10 @@ Route::get('/login', function () {
 Route::get('/home', function () {
     return view('home');
 });
+
+Route::get('/cart', function () {
+    return view('cart');
+});
 // Route::post('/', [UserController::class, 'login']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/', [ProductController::class, 'index']);
