@@ -22,7 +22,7 @@ class UserController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 // Password matches, proceed with authentication logic
                 $request->session()->put('user',$user);
-                return redirect('/home');
+                return redirect('/');
             } else {
                 // Password does not match, handle accordingly
                 return "No match";
