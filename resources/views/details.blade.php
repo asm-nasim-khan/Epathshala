@@ -16,7 +16,13 @@
        <br><br>
        <form action="/add_to_cart" method="POST">
            @csrf
-           <input type="hidden" name="product_id" value={{$product['id']}}>
+           <input type="hidden" name="product_id" value= {{ $product['id'] }}>
+       <button class="btn btn-primary">Add to cart</button>
+       </form>
+       <br><br>
+       <form action="/add_to_bookmark" method="POST">
+           @csrf
+           <input type="hidden" name="product_id" value= {{ $product['id'] }}>
        <button class="btn btn-primary">Watch Later</button>
        </form>
        <br><br>

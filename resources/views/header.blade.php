@@ -1,3 +1,16 @@
+<?php
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Auth; // Import the Auth facade
+use Illuminate\Support\Facades\Session;
+
+if (Session::has('user'))  {
+    $user = session('user'); // Get the logged-in user
+    $total = ProductController::cart_item($user['id']);
+} else {
+    $total = 696969; // Default value if user is not logged in
+}
+?>
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -18,6 +31,10 @@
       <ul class="nav navbar-nav">
         <li class=""><a href="/">Home</a></li>
         <li class=""><a href="#">Order </a></li>
+        <li class=""><a href="/friends">Friends</a></li>
+        <li class=""><a href="/userProfile/{{session('user')['id']}}">{{ session('user')['name'] }}</a></li>
+
+
     
          <!--
         <li><a href="#">Link</a></li>
@@ -41,9 +58,9 @@
         <button type="search" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/cart"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a></li>
-        <!--
-        <li class="dropdown">
+        <li><a href="/bookmark"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span><br>Watch Later</a></li>
+        <li><a href="/cartlist"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span><br>Cart ({{$total}}) </a></li>
+        <!--<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">Action</a></li>
