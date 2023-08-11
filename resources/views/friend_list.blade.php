@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth; // Import the Auth facade
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use App\Models\MyCourses;
 $user = session('user'); // Get the logged-in user
 $userId = $user['id'];
 

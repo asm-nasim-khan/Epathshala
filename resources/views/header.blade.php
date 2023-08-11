@@ -22,7 +22,7 @@ if (Session::has('user'))  {
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand"  href="/">
-      <img src='https://cdn.elearningindustry.com/wp-content/uploads/2021/08/Top-5-Benefits-Of-eLearning-Education.png' width="40" height="40">
+      E-Pathshala
       </a>
     </div>
 
@@ -32,7 +32,7 @@ if (Session::has('user'))  {
         <li class=""><a href="/">Home</a></li>
         <li class=""><a href="#">Order </a></li>
         <li class=""><a href="/friends">Friends</a></li>
-        <li class=""><a href="/userProfile/{{session('user')['id']}}">{{ session('user')['name'] }}</a></li>
+
 
 
     
@@ -60,6 +60,22 @@ if (Session::has('user'))  {
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/bookmark"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span><br>Watch Later</a></li>
         <li><a href="/cartlist"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span><br>Cart ({{$total}}) </a></li>
+          @if(Session::has('user'))
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="/userProfile/{{session('user')['id']}}">{{Session::get('user')['name']}}
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+            <li class=""><a href="/userProfile/{{session('user')['id']}}">{{ session('user')['name'] }}</a></li>
+            <li class=""><a href="/myCourse">My Courses</a></li>
+            <li class=""><a href="/voucher">Add a Voucher</a></li>
+
+
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
+          @else
+          <li><a href="/login">Login</a></li>
+          @endif
         <!--<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu">

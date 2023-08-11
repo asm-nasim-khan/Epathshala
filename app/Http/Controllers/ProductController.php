@@ -7,6 +7,12 @@ use App\Models\Product;
 use App\Models\cart;
 use App\Models\friend;
 use App\Models\bookmark;
+use App\Models\Order;
+use App\Models\MyCourses;
+use App\Models\Coupon;
+
+
+
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth; // Import the Auth facade
@@ -32,7 +38,8 @@ class ProductController extends Controller
 
     function profile($id){
         $data =  User::find($id);
-        return view('profile',['profile'=>$data]);
+        $courses = MyCourses::where('user_id', $data['id'])->get();
+        return view('profile',['profile_data'=>$data,'course'=>$courses]);
     }
     function userProfile($id){
         $data =  User::find($id);
@@ -88,9 +95,9 @@ class ProductController extends Controller
     function orderNow()
     {
         $userId=Session::get('user')['id'];
-        $total= $products= DB::table('cart')
-         ->join('products','cart.product_id','=','products.id')
-         ->where('cart.user_id',$userId)
+        $total= $products= DB::table('saved_tale')
+         ->join('products','saved_tale.product_id','=','products.id')
+         ->where('saved_tale.user_id',$userId)
          ->sum('products.price');
  
          return view('ordernow',['total'=>$total]);
@@ -147,6 +154,69 @@ class ProductController extends Controller
     }
 }
 
+// function myCourse(){
+//     if (Session::has('user'))  {
+//         $user = session('user'); // Get the logged-in user
+//         $userId = $user['id'];
+//         $data = MyCourses::where('user_id', $userId)->get();
+//         return view('mycourses',['mycourses'=>$data]);
+// }
+// else{
+//     return "Login First....";
+// }
+// }
+
+function paynow(){
+    return view('payment');
+}
+
+function payment(Request $request){
+    // HERE
+    $userId=Session::get('user')['id'];
+    $allOrder= Order::where('user_id',$userId)->get();
+         foreach($allOrder as $cart)
+         {
+             $order= new MyCourses();
+             $order->product_id=$cart['product_id'];
+             $order->user_id=$cart['user_id'];
+             $order->save();
+         }
+
+    Order::where('user_id',$userId)->delete();
+    $request->input();
+    return redirect('/');
+}
+
+function voucher(){
+    // HERE
+    // $userId=Session::get('user')['id'];
+    // $allOrder= Order::where('user_id',$userId)->get();
+    //      foreach($allOrder as $cart)
+    //      {
+    //          $order= new MyCourses();
+    //          $order->product_id=$cart['product_id'];
+    //          $order->user_id=$cart['user_id'];
+    //          $order->save();
+    //      }
+
+    // Order::where('user_id',$userId)->delete();
+    // $request->input();
+    // return redirect('/');
+    return view('voucher');
+
+}
+
+function addvoucher(Request $request){
+    // HERE
+    $userId=Session::get('user')['id'];
+    $order= new Coupon();
+    $order->coupon_code=$request->input('coupon');;
+    $order->user_id=$userId;
+    $order->save();
+    return redirect('/');
+
+}
+
 function Addfriend(Request $request){
     if($request->session()->has('user')){
         $friend = new friend();
@@ -169,5 +239,49 @@ function searchFriends(Request $request){
 
     return view('searchFriend',['searchFriend'=>$data]);
 }
+
+function orderplace(Request $request)
+    {
+        $userId=Session::get('user')['id'];
+        $allCart= cart::where('user_id',$userId)->get();
+         foreach($allCart as $cart)
+         {
+             $order= new Order();
+             $order->product_id=$cart['product_id'];
+             $order->user_id=$cart['user_id'];
+             $order->status="pending";
+             $order->payment_method=$request->payment;
+             $order->payment_status="pending";
+             $order->address=$request->address;
+             $order->save();
+             cart::where('user_id',$userId)->delete(); 
+         }
+         $request->input();
+         return redirect('/paynow');
+    }
+
+
+    function myOrders()
+    {
+        $userId=Session::get('user')['id'];
+        $orders= DB::table('orders')
+         ->join('products','orders.product_id','=','products.id')
+         ->where('orders.user_id',$userId)
+         ->get();
+ 
+         return view('myorders',['orders'=>$orders]);
+    }
+
+    function myCourse(){
+        
+        $userId=Session::get('user')['id'];
+        $products= DB::table('my_course')
+        ->join('products','my_course.product_id','=','products.id')
+        ->where('my_course.user_id',$userId)
+        ->select('products.*','my_course.id as cart_id')
+        ->get();
+
+        return view('mycourses',['products'=>$products]);
+    }
     
 }

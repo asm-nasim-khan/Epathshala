@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
-
+use Illuminate\Contracts\Session\Session;
 
 
 /*
@@ -21,7 +21,13 @@ Route::get('/login', function () {
     return view('login');
 });
 
-
+Route::get('/logout', function () {
+if (\Illuminate\Support\Facades\Session::has('user')) {
+    \Illuminate\Support\Facades\Session::forget('user');
+    }
+    
+    return redirect('login');
+});
 
 // Route::post('/', [UserController::class, 'login']);
 Route::post('/login', [UserController::class, 'login']);
@@ -47,7 +53,22 @@ Route::post('/add_to_bookmark', [ProductController::class, 'Addbookmark']);
 Route::post('/addfriend', [ProductController::class, 'Addfriend']);
 
 Route::get('/friends', [ProductController::class, 'friends']);
-Route::get("/bookmark",[ProductController::class,'bookmark']); 
+Route::get("/bookmark",[ProductController::class,'bookmark']);
+Route::get("/myCourse",[ProductController::class,'myCourse']);
+Route::get("/voucher",[ProductController::class,'voucher']);
+Route::post("/addvoucher",[ProductController::class,'addvoucher']);
+
+
+
+Route::get("/ordernow",[ProductController::class,'orderNow']);
+Route::get("/paynow",[ProductController::class,'paynow']);
+
+Route::post("/orderplace",[ProductController::class,'orderplace']);
+Route::post("/payment",[ProductController::class,'payment']);
+
+
+
+
 
 
 

@@ -1,5 +1,7 @@
 @extends('master')
 @section('content')
+
+
 <div class="container custom-login">
     <div class="row">
         <div class="col-sm-4 col-sm-offset-4">
@@ -28,4 +30,4 @@
   <span class="input-group-addon" id="basic-addon3">https://example.com/users/</span>
   <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
 </div> -->
-@endsection
+@endsection 
