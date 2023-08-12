@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -65,6 +66,20 @@ Route::get("/paynow",[ProductController::class,'paynow']);
 
 Route::post("/orderplace",[ProductController::class,'orderplace']);
 Route::post("/payment",[ProductController::class,'payment']);
+Route::post("/publish_offer",[ProductController::class,'publish_offer']);
+
+Route::get("/generatePdf",[PdfController::class,'generatePdf']);
+Route::get("/complete_payment",[ProductController::class,'complete_payment']);
+Route::get("/showpdf",[ProductController::class,'showpdf']);
+Route::get('/offer_push', [ProductController::class, 'offer_push']);
+Route::get('/voucher_list', [ProductController::class, 'voucher_list']);
+
+
+
+
+
+
+
 
 
 

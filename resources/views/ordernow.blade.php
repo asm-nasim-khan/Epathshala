@@ -21,7 +21,6 @@ foreach($allCoupon as $item)
           $offer = $offer + $temp['amount'];
 
          }
-Coupon::where('user_id',$userId)->delete();
 
 
 ?> 

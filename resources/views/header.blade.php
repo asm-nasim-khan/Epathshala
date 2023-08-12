@@ -30,8 +30,16 @@ if (Session::has('user'))  {
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class=""><a href="/">Home</a></li>
-        <li class=""><a href="#">Order </a></li>
+        @if(Session::has('user'))
+     @if($user['role'] == 'admin')
+         <li class=""><a href="/offer_push">Post Voucher</a></li>
+         @else
+         <li class=""><a href="/voucher_list">Available Vouchers</a></li>
+    @endif
+    @endif
+        
         <li class=""><a href="/friends">Friends</a></li>
+
 
 
 

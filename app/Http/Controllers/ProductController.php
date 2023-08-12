@@ -10,6 +10,8 @@ use App\Models\bookmark;
 use App\Models\Order;
 use App\Models\MyCourses;
 use App\Models\Coupon;
+use App\Models\Offer;
+
 
 
 
@@ -95,12 +97,19 @@ class ProductController extends Controller
     function orderNow()
     {
         $userId=Session::get('user')['id'];
-        $total= $products= DB::table('saved_tale')
+        $orderAll = cart::where('user_id',$userId)->first();
+        if (isset($orderAll)) {
+            $total= $products= DB::table('saved_tale')
          ->join('products','saved_tale.product_id','=','products.id')
          ->where('saved_tale.user_id',$userId)
          ->sum('products.price');
  
          return view('ordernow',['total'=>$total]);
+        } else {
+            return redirect('/');
+        }
+        
+        
     }
     
     
@@ -170,6 +179,10 @@ function paynow(){
     return view('payment');
 }
 
+function offer_push(){
+    return view('offer_push');
+}
+
 function payment(Request $request){
     // HERE
     $userId=Session::get('user')['id'];
@@ -182,27 +195,32 @@ function payment(Request $request){
              $order->save();
          }
 
-    Order::where('user_id',$userId)->delete();
+    
     $request->input();
+    return redirect('/complete_payment');
+}
+
+
+function publish_offer(Request $request){
+    // HERE
+    $order= new Offer();
+    $order->coupon_code=$request->input('coupon');
+    $order->amount=$request->input('amount');
+    $order->save();
+
     return redirect('/');
 }
 
 function voucher(){
-    // HERE
-    // $userId=Session::get('user')['id'];
-    // $allOrder= Order::where('user_id',$userId)->get();
-    //      foreach($allOrder as $cart)
-    //      {
-    //          $order= new MyCourses();
-    //          $order->product_id=$cart['product_id'];
-    //          $order->user_id=$cart['user_id'];
-    //          $order->save();
-    //      }
-
-    // Order::where('user_id',$userId)->delete();
-    // $request->input();
-    // return redirect('/');
     return view('voucher');
+
+}
+function complete_payment(){
+    return view('complete_payment');
+
+}
+function showpdf(){
+    return view('billing_invoice');
 
 }
 
@@ -210,7 +228,7 @@ function addvoucher(Request $request){
     // HERE
     $userId=Session::get('user')['id'];
     $order= new Coupon();
-    $order->coupon_code=$request->input('coupon');;
+    $order->coupon_code=$request->input('coupon');
     $order->user_id=$userId;
     $order->save();
     return redirect('/');
@@ -282,6 +300,12 @@ function orderplace(Request $request)
         ->get();
 
         return view('mycourses',['products'=>$products]);
+    }
+    function voucher_list(){
+        
+        $allOffer_list= Offer::all();
+
+        return view('voucher_list',['voucher_list'=>$allOffer_list]);
     }
     
 }
