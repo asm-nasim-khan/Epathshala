@@ -83,11 +83,7 @@ class ProductController extends Controller
         cart::destroy($id);
         return redirect('cartlist');
     }
-    function removefriend($id)
-    {
-        friend::destroy($id);
-        return redirect('friends');
-    }
+    
     function removebookmark($id)
     {
         bookmark::destroy($id);
@@ -112,16 +108,30 @@ class ProductController extends Controller
         
     }
     
-    
-    
 
     function Addcart(Request $request){
         if($request->session()->has('user')){
+            $user = session('user'); // Get the logged-in user
+            $userId = $user['id'];
+            $f = cart::where('user_id', $userId)->get();
+            $myCou = MyCourses::where('user_id', $userId)->get();
+            $key = $request->input('product_id');
+            foreach($myCou as $cou)
+         {
+            if ($cou['product_id'] == $key ){
+                return redirect('myCourse');
+            } 
+         }
+            foreach($f as $one)
+         {
+            if ($one['product_id'] == $key ){
+                return redirect('cartlist');   
+            } 
+         }
             $cart = new cart();
             $cart->user_id = $request->session()->get('user')['id'];
             $cart->product_id = $request->input('product_id');
             $cart->save();
-
             return redirect('/');
         }
         else{
@@ -131,6 +141,21 @@ class ProductController extends Controller
         
     }
     function Addbookmark(Request $request){
+        $user = session('user'); // Get the logged-in user
+            $userId = $user['id'];
+            $f = bookmark::where('user_id', $userId)->get();
+            $key = $request->input('product_id');
+            foreach($f as $one)
+         {
+            if ($one['product_id'] == $key ){
+                return redirect('bookmark');
+                
+                
+                
+                
+            }
+             
+         }
         if($request->session()->has('user')){
             $cart = new bookmark();
             $cart->user_id = $request->session()->get('user')['id'];
@@ -151,37 +176,12 @@ class ProductController extends Controller
         return $cartItemCount;
     }
     
-    function friends(){
-        if (Session::has('user'))  {
-            $user = session('user'); // Get the logged-in user
-            $userId = $user['id'];
-            $data = friend::where('user_id', $userId)->get();
-            return view('friend_list',['friend_list'=>$data]);
-    }
-    else{
-        return "Login First....";
-    }
-}
-
-// function myCourse(){
-//     if (Session::has('user'))  {
-//         $user = session('user'); // Get the logged-in user
-//         $userId = $user['id'];
-//         $data = MyCourses::where('user_id', $userId)->get();
-//         return view('mycourses',['mycourses'=>$data]);
-// }
-// else{
-//     return "Login First....";
-// }
-// }
 
 function paynow(){
     return view('payment');
 }
 
-function offer_push(){
-    return view('offer_push');
-}
+
 
 function payment(Request $request){
     // HERE
@@ -201,20 +201,9 @@ function payment(Request $request){
 }
 
 
-function publish_offer(Request $request){
-    // HERE
-    $order= new Offer();
-    $order->coupon_code=$request->input('coupon');
-    $order->amount=$request->input('amount');
-    $order->save();
 
-    return redirect('/');
-}
 
-function voucher(){
-    return view('voucher');
 
-}
 function complete_payment(){
     return view('complete_payment');
 
@@ -224,39 +213,10 @@ function showpdf(){
 
 }
 
-function addvoucher(Request $request){
-    // HERE
-    $userId=Session::get('user')['id'];
-    $order= new Coupon();
-    $order->coupon_code=$request->input('coupon');
-    $order->user_id=$userId;
-    $order->save();
-    return redirect('/');
 
-}
 
-function Addfriend(Request $request){
-    if($request->session()->has('user')){
-        $friend = new friend();
-        $friend->user_id = $request->session()->get('user')['id'];
-        $friend->email = $request->input('email');
-        $friend->save();
 
-        return redirect('/');
-    }
-    else{
-        return redirect('/login');
-    }
 
-    
-}
-function searchFriends(Request $request){
-        
-    $query = $request->input('query');
-    $data = User::where('email', 'like', '%' . $query . '%')->get();
-
-    return view('searchFriend',['searchFriend'=>$data]);
-}
 
 function orderplace(Request $request)
     {
@@ -301,11 +261,6 @@ function orderplace(Request $request)
 
         return view('mycourses',['products'=>$products]);
     }
-    function voucher_list(){
-        
-        $allOffer_list= Offer::all();
-
-        return view('voucher_list',['voucher_list'=>$allOffer_list]);
-    }
+    
     
 }
