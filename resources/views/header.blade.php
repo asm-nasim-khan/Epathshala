@@ -36,6 +36,9 @@ if (Session::has('user'))  {
          @else
          <li class=""><a href="/voucher_list">Available Vouchers</a></li>
     @endif
+    @if($user['role'] == 'teacher')
+         <li class=""><a href="/new_course">Upload Course</a></li>
+    @endif
     @endif
         
         <li class=""><a href="/friends">Friends</a></li>

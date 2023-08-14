@@ -181,6 +181,10 @@ function paynow(){
     return view('payment');
 }
 
+function new_course(){
+    return view('new_course');
+}
+
 
 
 function payment(Request $request){
@@ -260,6 +264,28 @@ function orderplace(Request $request)
         ->get();
 
         return view('mycourses',['products'=>$products]);
+    }
+
+    function publish_course(Request $request){
+        if($request->session()->has('user')){
+            $cart = new Product();
+            $cart->name = $request->input('title');
+            $cart->catagory = $request->input('catagory');
+            $cart->discription = $request->input('discription');
+            $cart->difficulty = $request->input('difficulty');
+            $cart->cover = $request->input('cover');
+            $cart->price = $request->input('price');
+
+            $cart->views = 0;
+            $cart->save();
+
+            return redirect('/');
+        }
+        else{
+            return redirect('/login');
+        }
+    
+        
     }
     
     

@@ -41,6 +41,10 @@ Route::get('/userProfile/{id}', [ProductController::class, 'userProfile']);
 
 
 Route::get('/search', [ProductController::class, 'search']);
+Route::get('/new_course', [ProductController::class, 'new_course']);
+Route::post("/publish_course",[ProductController::class,'publish_course']);
+
+
 
 
 
@@ -65,6 +69,7 @@ Route::post("/addvoucher",[VoucherController::class,'addvoucher']);
 Route::get('/voucher_list', [VoucherController::class, 'voucher_list']);
 Route::get('/offer_push', [VoucherController::class, 'offer_push']);
 Route::post("/publish_offer",[VoucherController::class,'publish_offer']);
+
 
 
 
