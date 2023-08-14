@@ -42,7 +42,7 @@ $userId = $user['id'];
             ?>
             <div class=" row searched-item cart-list-devider">
              <div class="col-sm-3">
-                <a href="detail/{{$item['product_id']}}">
+                <a href="/detail/{{$item['product_id']}}">
                     <img class="trending-image" src="{{$Course_details->cover}}">
                   
              </div>

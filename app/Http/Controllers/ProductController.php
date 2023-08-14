@@ -141,7 +141,9 @@ class ProductController extends Controller
         
     }
     function Addbookmark(Request $request){
-        $user = session('user'); // Get the logged-in user
+        
+        if($request->session()->has('user')){
+            $user = session('user'); // Get the logged-in user
             $userId = $user['id'];
             $f = bookmark::where('user_id', $userId)->get();
             $key = $request->input('product_id');
@@ -156,7 +158,6 @@ class ProductController extends Controller
             }
              
          }
-        if($request->session()->has('user')){
             $cart = new bookmark();
             $cart->user_id = $request->session()->get('user')['id'];
             $cart->product_id = $request->input('product_id');

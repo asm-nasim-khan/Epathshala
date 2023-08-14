@@ -69,9 +69,10 @@ if (Session::has('user'))  {
         <button type="search" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
       </form>
       <ul class="nav navbar-nav navbar-right">
+      @if(Session::has('user'))
         <li><a href="/bookmark"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span><br>Watch Later</a></li>
         <li><a href="/cartlist"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span><br>Cart ({{$total}}) </a></li>
-          @if(Session::has('user'))
+          
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="/userProfile/{{session('user')['id']}}">{{Session::get('user')['name']}}
             <span class="caret"></span></a>
